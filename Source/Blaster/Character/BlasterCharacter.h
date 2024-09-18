@@ -63,6 +63,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<class UCombatComponent> Combat;
+
+	UFUNCTION(Server, Reliable)
+	void ServerEquip();
 	
 public:
 	void SetOverlappingWeapon(AWeapon* Weapon);
