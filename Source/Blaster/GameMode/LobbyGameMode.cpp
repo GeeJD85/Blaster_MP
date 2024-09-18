@@ -15,7 +15,16 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 		if(const TObjectPtr<UWorld> World = GetWorld())
 		{
 			bUseSeamlessTravel = true;
-			World->ServerTravel(FString("/Game/Maps/BlasterMap?listen"));
+			FTimerHandle LoadLevelTimer;
+			GetWorldTimerManager().SetTimer(LoadLevelTimer, this, &ThisClass::LoadLevel, 5.f);			
 		}
+	}
+}
+
+void ALobbyGameMode::LoadLevel()
+{
+	if(const TObjectPtr<UWorld> World = GetWorld())
+	{
+		World->ServerTravel(FString("/Game/Maps/BlasterMap?listen"));
 	}
 }

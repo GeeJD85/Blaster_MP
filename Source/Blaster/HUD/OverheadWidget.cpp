@@ -4,6 +4,7 @@
 #include "OverheadWidget.h"
 
 #include "Components/TextBlock.h"
+#include "GameFramework/PlayerState.h"
 
 void UOverheadWidget::SetDisplayText(FString TextToDisplay)
 {
@@ -14,7 +15,7 @@ void UOverheadWidget::SetDisplayText(FString TextToDisplay)
 }
 
 void UOverheadWidget::ShowPlayerNetRole(APawn* InPawn)
-{
+{	
 	ENetRole RemoteRole = InPawn->GetRemoteRole();
 	FString Role;
 	switch (RemoteRole)
@@ -32,8 +33,20 @@ void UOverheadWidget::ShowPlayerNetRole(APawn* InPawn)
 		Role = FString("None");
 		break;
 	}
-	FString RemoteRoleString = FString::Printf(TEXT("Remote Role: %s"), *Role);
-	SetDisplayText(RemoteRoleString);
+	//FString RemoteRoleString = FString::Printf(TEXT("Remote Role: %s"), *Role);
+	SetDisplayText(Role);
+}
+
+void UOverheadWidget::SetPlayerName(APawn* InPawn)
+{
+	const TObjectPtr<APlayerState> PlayerState = InPawn->GetPlayerState();
+
+	if(!PlayerState)
+	{
+		SetDisplayText(FString("NULL"));
+		return;
+	}
+	SetDisplayText(PlayerState->GetPlayerName());
 }
 
 void UOverheadWidget::NativeDestruct()

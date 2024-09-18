@@ -47,7 +47,6 @@ void UMenu::MenuSetup(int32 NumberOfPublicConnections, FString TypeOfMatch, FStr
 	}
 }
 
-
 bool UMenu::Initialize()
 {
 	if (!Super::Initialize())
