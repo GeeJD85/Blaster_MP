@@ -29,6 +29,7 @@ protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Equip();
+	void CrouchPressed();
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> BlasterContext;
@@ -44,6 +45,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> EquipAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> CrouchAction;
 
 private:
 	UPROPERTY(VisibleAnywhere, Category=Camera)
