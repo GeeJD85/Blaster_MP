@@ -57,6 +57,8 @@ void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ABlasterCharacter::Jump);
 		EnhancedInputComponent->BindAction(EquipAction, ETriggerEvent::Triggered, this, &ABlasterCharacter::Equip);
 		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &ABlasterCharacter::CrouchPressed);
+		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Started, this, &ABlasterCharacter::AimButtonPressed);
+		EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Completed, this, &ABlasterCharacter::AimButtonReleased);
 	}
 }
 
@@ -147,6 +149,22 @@ void ABlasterCharacter::CrouchPressed()
 	}
 }
 
+void ABlasterCharacter::AimButtonPressed()
+{
+	if (Combat)
+	{
+		Combat->SetAiming(true);
+	}
+}
+
+void ABlasterCharacter::AimButtonReleased()
+{
+	if (Combat)
+	{
+		Combat->SetAiming(false);
+	}
+}
+
 void ABlasterCharacter::ServerEquip_Implementation()
 {
 	if (Combat)
@@ -191,3 +209,7 @@ bool ABlasterCharacter::IsWeaponEquipped()
 	return (Combat && Combat->EquippedWeapon);
 }
 
+bool ABlasterCharacter::IsAiming()
+{
+	return (Combat && Combat->bAiming);
+}

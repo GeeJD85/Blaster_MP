@@ -21,15 +21,23 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
 	void EquipWeapon(AWeapon* WeaponToEquip);
+	
 
 protected:
 	virtual void BeginPlay() override;
+	void SetAiming(bool bIsAiming);
+
+	UFUNCTION(Server, Reliable)
+	void ServerSetAiming(bool bIsAiming);
 
 private:
 	TObjectPtr<ABlasterCharacter> Character;
 
 	UPROPERTY(Replicated)
 	TObjectPtr<AWeapon> EquippedWeapon;
+
+	UPROPERTY(Replicated)
+	bool bAiming;
 
 public:	
 	

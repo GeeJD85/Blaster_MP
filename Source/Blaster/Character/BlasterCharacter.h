@@ -30,6 +30,8 @@ protected:
 	void Look(const FInputActionValue& Value);
 	void Equip();
 	void CrouchPressed();
+	void AimButtonPressed();
+	void AimButtonReleased();
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> BlasterContext;
@@ -48,6 +50,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> CrouchAction;
+	
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> AimAction;
 
 private:
 	UPROPERTY(VisibleAnywhere, Category=Camera)
@@ -74,5 +79,7 @@ private:
 public:
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	bool IsWeaponEquipped();
+	bool IsAiming();
 
 };
+
