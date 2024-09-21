@@ -57,5 +57,6 @@ private:
 
 public:	
 	void SetWeaponState(EWeaponState State);
-	FORCEINLINE TObjectPtr<USphereComponent> GetAreaSphere() const {return AreaSphere;}
+	FORCEINLINE TObjectPtr<USphereComponent> GetAreaSphere() const { return AreaSphere; }
+	FORCEINLINE TObjectPtr<USkeletalMeshComponent> GetWeaponMesh() const { return WeaponMesh; }
 };
