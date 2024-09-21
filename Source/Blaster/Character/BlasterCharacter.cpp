@@ -193,7 +193,17 @@ void ABlasterCharacter::AimOffset(float DeltaTime)
 		bUseControllerRotationYaw = true;
 	}
 
-	AO_Pitch = GetBaseAimRotation().Pitch;
+	AO_Pitch = GetBaseAimRotation().GetNormalized().Pitch;
+
+	/*
+	if(AO_Pitch > 90.f && !IsLocallyControlled())
+	{
+		// Map pitch from [270, 360) to [-90, 0)  ) not inclusive of that number
+		FVector2D InRange(270.f, 360.f);
+		FVector2D OutRange(-90.f, 0.f);
+		AO_Pitch = FMath::GetMappedRangeValueClamped(InRange, OutRange, AO_Pitch);
+	}
+	*/
 }
 
 void ABlasterCharacter::ServerEquip_Implementation()
