@@ -42,6 +42,8 @@ ABlasterCharacter::ABlasterCharacter()
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 
 	TurningInPlace = ETurningInPlace::ETIP_NotTurning;
+	NetUpdateFrequency = 66.f;
+	MinNetUpdateFrequency = 33.f;
 }
 
 void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -224,7 +226,7 @@ void ABlasterCharacter::TurnInPlace(float DeltaTime)
 	{
 		TurningInPlace = ETurningInPlace::ETIP_Left;
 	}
-	if (TurningInPlace != ETurningInPlace::ETIP_NotTurning)
+	if (TurningInPlace != ETurningInPlace::ETIP_NotTurning) // Turning in place, turning the root bone in AnimBP
 	{
 		InterpAO_Yaw = FMath::FInterpTo(InterpAO_Yaw, 0.f, DeltaTime, 4.f);
 		AO_Yaw = InterpAO_Yaw;
