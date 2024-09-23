@@ -10,7 +10,7 @@ void AProjectileWeapon::Fire(const FVector& HitTarget)
 {
 	Super::Fire(HitTarget);
 
-	if (!HasAuthority()) return;
+	if (!HasAuthority()) return; // Spawn the projectile on the server and in Projectile.cpp replicate from server to client (Anti-Cheat)
 	
 	const TObjectPtr<APawn> InstigatorPawn = Cast<APawn>(GetOwner());
 	
