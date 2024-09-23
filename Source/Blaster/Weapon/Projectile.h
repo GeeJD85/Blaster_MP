@@ -24,6 +24,11 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<class UProjectileMovementComponent> ProjectileMovementComponent;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<class UParticleSystem> Tracer;
+
+	TObjectPtr<class UParticleSystemComponent> TracerComponent;
 	
 public:	
 	

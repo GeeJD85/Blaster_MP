@@ -74,6 +74,22 @@ void UCombatComponent::FireButtonPressed(bool bPressed)
 	}
 }
 
+void UCombatComponent::ServerFire_Implementation()
+{
+	MulticastFire(); // Call multicast RPC from Server as Server
+}
+
+void UCombatComponent::MulticastFire_Implementation()
+{
+	if (EquippedWeapon == nullptr) return;
+
+	if(Character)
+	{
+		Character->PlayFireMontage(bAiming);
+		EquippedWeapon->Fire(HitTarget);
+	}
+}
+
 void UCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
 {
 	FVector2D ViewportSize;
@@ -119,22 +135,6 @@ void UCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
 				FColor::Red
 				);
 		}
-	}
-}
-
-void UCombatComponent::ServerFire_Implementation()
-{
-	MulticastFire(); // Call multicast RPC from Server as Server
-}
-
-void UCombatComponent::MulticastFire_Implementation()
-{
-	if (EquippedWeapon == nullptr) return;
-
-	if(Character)
-	{
-		Character->PlayFireMontage(bAiming);
-		EquippedWeapon->Fire(HitTarget);
 	}
 }
 
