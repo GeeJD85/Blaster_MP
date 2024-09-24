@@ -21,7 +21,7 @@ protected:
 	virtual void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 private:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UStaticMeshComponent> CasingMesh;
 
 	UPROPERTY(EditAnywhere)
@@ -29,4 +29,8 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class USoundCue> ShellSound;
+
+	UPROPERTY(EditAnywhere)
+	float LifetimeMax = 5.0f;
+	int32 BounceCount = 0;
 };
