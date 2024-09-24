@@ -23,7 +23,6 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
 	void EquipWeapon(AWeapon* WeaponToEquip);
-	
 
 protected:
 	virtual void BeginPlay() override;
@@ -45,8 +44,12 @@ protected:
 
 	void TraceUnderCrosshairs(FHitResult& TraceHitResult);
 
+	void SetHUDCrosshairs(float DeltaTime);
+
 private:
 	TObjectPtr<ABlasterCharacter> Character;
+	class ABlasterPlayerController* Controller;
+	class ABlasterHUD* HUD;
 
 	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
 	TObjectPtr<AWeapon> EquippedWeapon;
