@@ -42,6 +42,7 @@ void ACasing::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitive
 	{		
 		CasingMesh->SetNotifyRigidBodyCollision(false);
 		CasingMesh->SetSimulatePhysics(false);
+		return;
 	}
 	
 	if (ShellSound && BounceCount <= 5)
