@@ -26,6 +26,9 @@ public:
 	virtual void PostInitializeComponents() override;
 	void PlayFireMontage(bool bAiming);
 
+	UFUNCTION(NetMulticast, Unreliable) // Unrealiable because only playing animations which aren't too important
+	void MulticastHit();
+
 protected:
 	virtual void BeginPlay() override;
 	void Move(const FInputActionValue& Value);
@@ -37,6 +40,7 @@ protected:
 	void AimButtonReleased();
 	void AimOffset(float DeltaTime);
 	void FireButtonPressed(const FInputActionValue& Value);
+	void PlayHitReactMontage();
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> BlasterContext;
@@ -94,6 +98,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category=Combat)
 	TObjectPtr<class UAnimMontage> FireWeaponMontage;
+
+	UPROPERTY(EditAnywhere, Category=Combat)
+	TObjectPtr<class UAnimMontage> HitReactMontage;
 
 	void HideCameraIfCharacterClose();
 
