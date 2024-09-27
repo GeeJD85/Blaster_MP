@@ -16,6 +16,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void Destroyed() override; // ALREADY Replicated - good for particle spawns etc
 
+	UFUNCTION(NetMulticast, Reliable) // Unreliable because only playing animations which aren't too important
+	void MulticastDestroyProjectile(bool bPlayerHit);
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -39,6 +42,8 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class USoundCue> ImpactSound;
+	
+	bool bWasPlayerHit = false;
 	
 public:	
 	

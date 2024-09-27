@@ -14,8 +14,10 @@
 #include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
+#include "Sound/Soundcue.h"
 
 ABlasterCharacter::ABlasterCharacter()
 {
@@ -128,6 +130,18 @@ void ABlasterCharacter::PlayHitReactMontage()
 		AnimInstance->Montage_Play(HitReactMontage);
 		const FName SectionName("FromFront");
 		AnimInstance->Montage_JumpToSection(SectionName);
+	}
+}
+
+void ABlasterCharacter::SpawnHitParticles(const FVector& ImpactLocation)
+{
+	if(HitImpactParticles)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(this, HitImpactParticles, ImpactLocation);
+	}
+	if (HitImpactSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, HitImpactSound, ImpactLocation);
 	}
 }
 
@@ -306,7 +320,7 @@ void ABlasterCharacter::SimProxiesTurn()
 	ProxyRotation = GetActorRotation();
 	ProxyYaw = UKismetMathLibrary::NormalizedDeltaRotator(ProxyRotation, ProxyRotationLastFrame).Yaw;
 
-	UE_LOG(LogTemp, Warning, TEXT("ProxyYaw: %f"), ProxyYaw);
+	// UE_LOG(LogTemp, Warning, TEXT("ProxyYaw: %f"), ProxyYaw);
 
 	if (FMath::Abs(ProxyYaw) > TurnThreshold)
 	{
@@ -358,9 +372,10 @@ void ABlasterCharacter::TurnInPlace(float DeltaTime)
 	}
 }
 
-void ABlasterCharacter::MulticastHit_Implementation()
+void ABlasterCharacter::MulticastHit_Implementation(const FVector_NetQuantize& ImpactLocation) // Called from Projectile.cpp (server)
 {
 	PlayHitReactMontage();
+	SpawnHitParticles(ImpactLocation);
 }
 
 void ABlasterCharacter::HideCameraIfCharacterClose()

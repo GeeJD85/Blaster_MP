@@ -25,9 +25,9 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PostInitializeComponents() override;
 	void PlayFireMontage(bool bAiming);
-
-	UFUNCTION(NetMulticast, Unreliable) // Unrealiable because only playing animations which aren't too important
-	void MulticastHit();
+	
+	UFUNCTION(NetMulticast, Unreliable) // Unreliable because only playing animations which aren't too important
+	void MulticastHit(const FVector_NetQuantize& ImpactLocation);
 
 	virtual void OnRep_ReplicatedMovement() override;
 
@@ -45,6 +45,7 @@ protected:
 	void SimProxiesTurn();
 	void FireButtonPressed(const FInputActionValue& Value);
 	void PlayHitReactMontage();
+	void SpawnHitParticles(const FVector& ImpactLocation);
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> BlasterContext;
@@ -104,7 +105,13 @@ private:
 	TObjectPtr<class UAnimMontage> FireWeaponMontage;
 
 	UPROPERTY(EditAnywhere, Category=Combat)
-	TObjectPtr<class UAnimMontage> HitReactMontage;
+	TObjectPtr<UAnimMontage> HitReactMontage;
+
+	UPROPERTY(EditAnywhere, Category=Combat)
+	TObjectPtr<UParticleSystem> HitImpactParticles;
+
+	UPROPERTY(EditAnywhere, Category=Combat)
+	TObjectPtr<USoundCue> HitImpactSound;
 
 	void HideCameraIfCharacterClose();
 
