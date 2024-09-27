@@ -44,6 +44,7 @@ protected:
 	void MulticastFire(const FVector_NetQuantize& TraceHitTarget);
 
 	void TraceUnderCrosshairs(FHitResult& TraceHitResult);
+	void Fire();
 
 	void SetHUDCrosshairs(float DeltaTime);
 
@@ -94,6 +95,15 @@ private:
 	float ZoomInterpSeed = 20.f;
 
 	void InterpFOV(float DeltaTime);
+
+	//
+	// Automatic fire
+	//
+	FTimerHandle FireTimer;
+	bool bCanFire = true;
+
+	void StartFireTimer();
+	void FireTimerFinished();
 	
 public:	
 	
