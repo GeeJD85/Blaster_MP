@@ -149,11 +149,13 @@ void ABlasterCharacter::SpawnHitParticles(const FVector_NetQuantize& ImpactLocat
 	}
 }
 
+/*
 void ABlasterCharacter::MulticastHit_Implementation(const FVector_NetQuantize& ImpactLocation, const FVector_NetQuantizeNormal& ImpactNormal) // Called from Projectile.cpp (server)
 {
 	PlayHitReactMontage();
 	SpawnHitParticles(ImpactLocation, ImpactNormal);
 }
+*/
 
 void ABlasterCharacter::OnRep_ReplicatedMovement()
 {
@@ -163,14 +165,38 @@ void ABlasterCharacter::OnRep_ReplicatedMovement()
 	TimeSinceLastMovementReplication = 0.f;
 }
 
+void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
+	AController* InstigatorController, AActor* DamageCauser)
+{
+	Health = FMath::Clamp(Health - Damage, 0.f, MaxHealth);
+	UpdateHUDHealth();
+	PlayHitReactMontage();
+}
+
+void ABlasterCharacter::OnRep_Health()
+{
+	UpdateHUDHealth();
+	PlayHitReactMontage();
+}
+
+void ABlasterCharacter::UpdateHUDHealth()
+{
+	BlasterPlayerController = BlasterPlayerController == nullptr ? Cast<ABlasterPlayerController>(Controller) : BlasterPlayerController;
+	if (BlasterPlayerController)
+	{
+		BlasterPlayerController->SetHUDHealth(Health, MaxHealth);
+	}
+}
+
 void ABlasterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	BlasterPlayerController = Cast<ABlasterPlayerController>(Controller);
-	if(BlasterPlayerController)
+	UpdateHUDHealth();
+
+	if (HasAuthority())
 	{
-		BlasterPlayerController->SetHUDHealth(Health, MaxHealth);
+		OnTakeAnyDamage.AddDynamic(this, &ABlasterCharacter::ReceiveDamage);
 	}
 }
 
@@ -413,10 +439,6 @@ float ABlasterCharacter::CalculateSpeed()
 	FVector Velocity = GetVelocity();
 	Velocity.Z = 0.f;
 	return Velocity.Size();
-}
-
-void ABlasterCharacter::OnRep_Health()
-{
 }
 
 void ABlasterCharacter::SetOverlappingWeapon(AWeapon* Weapon)

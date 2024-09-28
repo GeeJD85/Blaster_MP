@@ -47,7 +47,7 @@ void AProjectile::BeginPlay()
 		);
 	}
 
-	if (HasAuthority())
+	if (HasAuthority()) // Only register hit events on the server
 	{
 		CollisionBox->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 	}
@@ -57,12 +57,13 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	FVector NormalImpulse, const FHitResult& Hit)
 {
 	bool bWasPlayerHit = false;
+	
 	if (TObjectPtr<ABlasterCharacter> BlasterCharacter = Cast<ABlasterCharacter>(OtherActor))
 	{
 		bWasPlayerHit = true;
-		const FVector_NetQuantize ImpactPoint = Hit.ImpactPoint;
-		const FVector_NetQuantizeNormal ImpactNormal = Hit.ImpactNormal;
-		BlasterCharacter->MulticastHit(ImpactPoint, ImpactNormal);
+		//const FVector_NetQuantize ImpactPoint = Hit.ImpactPoint;
+		//const FVector_NetQuantizeNormal ImpactNormal = Hit.ImpactNormal;
+		//BlasterCharacter->MulticastHit(ImpactPoint, ImpactNormal);
 	}
 
 	MulticastDestroyProjectile(bWasPlayerHit);

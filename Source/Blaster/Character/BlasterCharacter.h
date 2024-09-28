@@ -25,10 +25,12 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PostInitializeComponents() override;
 	void PlayFireMontage(bool bAiming);
-	
+
+	/*
 	UFUNCTION(NetMulticast, Unreliable) // Unreliable because only playing animations which aren't too important
 	void MulticastHit(const FVector_NetQuantize& ImpactLocation, const FVector_NetQuantizeNormal& ImpactNormal);
-
+	*/
+	
 	virtual void OnRep_ReplicatedMovement() override;
 
 protected:
@@ -46,6 +48,10 @@ protected:
 	void FireButtonPressed(const FInputActionValue& Value);
 	void PlayHitReactMontage();
 	void SpawnHitParticles(const FVector_NetQuantize& ImpactLocation, const FVector_NetQuantizeNormal& ImpactNormal);
+
+	UFUNCTION()
+	void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* InstigatorController, AActor* DamageCauser);
+	void UpdateHUDHealth();
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> BlasterContext;
@@ -139,7 +145,7 @@ private:
 	UFUNCTION()
 	void OnRep_Health();
 
-	TObjectPtr<class ABlasterPlayerController> BlasterPlayerController;
+	class ABlasterPlayerController* BlasterPlayerController;
 	
 public:
 	void SetOverlappingWeapon(AWeapon* Weapon);
