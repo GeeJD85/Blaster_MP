@@ -17,6 +17,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
+#include "Particles/ParticleSystem.h"
+#include  "Particles/ParticleSystemComponent.h"
 #include "Sound/Soundcue.h"
 
 ABlasterCharacter::ABlasterCharacter()
@@ -96,6 +98,7 @@ void ABlasterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME_CONDITION(ABlasterCharacter, OverlappingWeapon, COND_OwnerOnly);
+	DOREPLIFETIME(ABlasterCharacter, Health);
 }
 
 void ABlasterCharacter::PostInitializeComponents()
@@ -133,16 +136,22 @@ void ABlasterCharacter::PlayHitReactMontage()
 	}
 }
 
-void ABlasterCharacter::SpawnHitParticles(const FVector& ImpactLocation)
+void ABlasterCharacter::SpawnHitParticles(const FVector_NetQuantize& ImpactLocation, const FVector_NetQuantizeNormal& ImpactNormal)
 {
 	if(HitImpactParticles)
 	{
-		UGameplayStatics::SpawnEmitterAtLocation(this, HitImpactParticles, ImpactLocation);
+		UGameplayStatics::SpawnEmitterAtLocation(this, HitImpactParticles, ImpactLocation, ImpactNormal.Rotation());
 	}
 	if (HitImpactSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, HitImpactSound, ImpactLocation);
 	}
+}
+
+void ABlasterCharacter::MulticastHit_Implementation(const FVector_NetQuantize& ImpactLocation, const FVector_NetQuantizeNormal& ImpactNormal) // Called from Projectile.cpp (server)
+{
+	PlayHitReactMontage();
+	SpawnHitParticles(ImpactLocation, ImpactNormal);
 }
 
 void ABlasterCharacter::OnRep_ReplicatedMovement()
@@ -372,12 +381,6 @@ void ABlasterCharacter::TurnInPlace(float DeltaTime)
 	}
 }
 
-void ABlasterCharacter::MulticastHit_Implementation(const FVector_NetQuantize& ImpactLocation) // Called from Projectile.cpp (server)
-{
-	PlayHitReactMontage();
-	SpawnHitParticles(ImpactLocation);
-}
-
 void ABlasterCharacter::HideCameraIfCharacterClose()
 {
 	if (!IsLocallyControlled()) return;
@@ -404,6 +407,10 @@ float ABlasterCharacter::CalculateSpeed()
 	FVector Velocity = GetVelocity();
 	Velocity.Z = 0.f;
 	return Velocity.Size();
+}
+
+void ABlasterCharacter::OnRep_Health()
+{
 }
 
 void ABlasterCharacter::SetOverlappingWeapon(AWeapon* Weapon)

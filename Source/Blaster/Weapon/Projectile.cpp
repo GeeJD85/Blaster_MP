@@ -6,8 +6,8 @@
 #include "Components/BoxComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
-//#include "Particles/ParticleSystem.h"
-//#include  "Particles/ParticleSystemComponent.h"
+#include "Particles/ParticleSystem.h"
+#include  "Particles/ParticleSystemComponent.h"
 #include "Sound/Soundcue.h"
 #include "Blaster/Character/BlasterCharacter.h"
 #include "Blaster/Blaster.h"
@@ -56,21 +56,16 @@ void AProjectile::BeginPlay()
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
 {
-	bWasPlayerHit = false;
+	bool bWasPlayerHit = false;
 	if (TObjectPtr<ABlasterCharacter> BlasterCharacter = Cast<ABlasterCharacter>(OtherActor))
 	{
 		bWasPlayerHit = true;
 		const FVector_NetQuantize ImpactPoint = Hit.ImpactPoint;
-		BlasterCharacter->MulticastHit(ImpactPoint);
+		const FVector_NetQuantizeNormal ImpactNormal = Hit.ImpactNormal;
+		BlasterCharacter->MulticastHit(ImpactPoint, ImpactNormal);
 	}
 
 	MulticastDestroyProjectile(bWasPlayerHit);
-}
-
-void AProjectile::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
 }
 
 void AProjectile::MulticastDestroyProjectile_Implementation(bool bPlayerHit)
@@ -86,13 +81,20 @@ void AProjectile::MulticastDestroyProjectile_Implementation(bool bPlayerHit)
 			UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
 		}
 	}
-
 	Destroy();
 }
 
+void AProjectile::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+}
+
+/*
 void AProjectile::Destroyed() // Replicated across network by default
 {
 	Super::Destroyed();
 
 	
 }
+*/

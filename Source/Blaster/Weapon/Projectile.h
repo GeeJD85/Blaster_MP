@@ -14,9 +14,9 @@ class BLASTER_API AProjectile : public AActor
 public:	
 	AProjectile();
 	virtual void Tick(float DeltaTime) override;
-	virtual void Destroyed() override; // ALREADY Replicated - good for particle spawns etc
+	// virtual void Destroyed() override; // ALREADY Replicated - good for particle spawns etc
 
-	UFUNCTION(NetMulticast, Reliable) // Unreliable because only playing animations which aren't too important
+	UFUNCTION(NetMulticast, Reliable) // Unreliable yields strange results
 	void MulticastDestroyProjectile(bool bPlayerHit);
 
 protected:
@@ -42,8 +42,6 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class USoundCue> ImpactSound;
-	
-	bool bWasPlayerHit = false;
 	
 public:	
 	

@@ -27,7 +27,7 @@ public:
 	void PlayFireMontage(bool bAiming);
 	
 	UFUNCTION(NetMulticast, Unreliable) // Unreliable because only playing animations which aren't too important
-	void MulticastHit(const FVector_NetQuantize& ImpactLocation);
+	void MulticastHit(const FVector_NetQuantize& ImpactLocation, const FVector_NetQuantizeNormal& ImpactNormal);
 
 	virtual void OnRep_ReplicatedMovement() override;
 
@@ -45,7 +45,7 @@ protected:
 	void SimProxiesTurn();
 	void FireButtonPressed(const FInputActionValue& Value);
 	void PlayHitReactMontage();
-	void SpawnHitParticles(const FVector& ImpactLocation);
+	void SpawnHitParticles(const FVector_NetQuantize& ImpactLocation, const FVector_NetQuantizeNormal& ImpactNormal);
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> BlasterContext;
@@ -108,10 +108,10 @@ private:
 	TObjectPtr<UAnimMontage> HitReactMontage;
 
 	UPROPERTY(EditAnywhere, Category=Combat)
-	TObjectPtr<UParticleSystem> HitImpactParticles;
+	TObjectPtr<class UParticleSystem> HitImpactParticles;
 
 	UPROPERTY(EditAnywhere, Category=Combat)
-	TObjectPtr<USoundCue> HitImpactSound;
+	TObjectPtr<class USoundCue> HitImpactSound;
 
 	void HideCameraIfCharacterClose();
 
@@ -125,6 +125,19 @@ private:
 	float ProxyYaw;
 	float TimeSinceLastMovementReplication;
 	float CalculateSpeed();
+
+	/*
+	 * Player Health
+	 */
+
+	UPROPERTY(EditAnywhere, Category="Player Stats")
+	float MaxHealth = 100.f;
+
+	UPROPERTY(ReplicatedUsing=OnRep_Health, VisibleAnywhere, Category="Player Stats")
+	float Health = 100.f;
+
+	UFUNCTION()
+	void OnRep_Health();
 	
 public:
 	void SetOverlappingWeapon(AWeapon* Weapon);
