@@ -138,6 +138,8 @@ private:
 
 	UFUNCTION()
 	void OnRep_Health();
+
+	TObjectPtr<class ABlasterPlayerController> BlasterPlayerController;
 	
 public:
 	void SetOverlappingWeapon(AWeapon* Weapon);
