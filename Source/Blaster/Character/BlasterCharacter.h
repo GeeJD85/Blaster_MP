@@ -36,6 +36,7 @@ public:
 	void Elim();
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastElim();
+	virtual void Destroyed() override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -182,6 +183,19 @@ private:
 	// Material Instance set on the blueprint used with the dynamic material instance
 	UPROPERTY(EditAnywhere, Category=Elim)
 	TObjectPtr<UMaterialInstance> DissolveMaterialInstance;
+
+	/*
+	 * Elim bot
+	 */
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UParticleSystem> ElimBotEffect;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UParticleSystemComponent> ElimBotComponent;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<USoundCue> ElimBotSound;
 	
 public:
 	void SetOverlappingWeapon(AWeapon* Weapon);

@@ -19,7 +19,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
-#include "Particles/ParticleSystem.h"
+//#include "Particles/ParticleSystem.h"
 #include  "Particles/ParticleSystemComponent.h"
 #include "Sound/Soundcue.h"
 
@@ -184,7 +184,7 @@ void ABlasterCharacter::Elim() // Called from server in GameMode
 	GetWorldTimerManager().SetTimer(ElimTimer, this, &ABlasterCharacter::ElimTImerFinished, ElimDelay);
 }
 
-void ABlasterCharacter::MulticastElim_Implementation()
+void ABlasterCharacter::MulticastElim_Implementation() // Server & Client
 {
 	bElimmed = true;
 	PlayElimMontage();
@@ -210,6 +210,17 @@ void ABlasterCharacter::MulticastElim_Implementation()
 	// Disable collision
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	// Spawn Elimbot
+	if (ElimBotEffect)
+	{
+		FVector ElimBotSpawnPoint(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 200.f);
+		ElimBotComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ElimBotEffect, ElimBotSpawnPoint, GetActorRotation());
+	}
+	if (ElimBotSound)
+	{
+		UGameplayStatics::SpawnSoundAtLocation(this, ElimBotSound, GetActorLocation());
+	}
 }
 
 void ABlasterCharacter::ElimTImerFinished()
@@ -251,6 +262,16 @@ void ABlasterCharacter::UpdateHUDHealth()
 	{
 		BlasterPlayerController->SetHUDHealth(Health, MaxHealth);
 	}
+}
+
+void ABlasterCharacter::Destroyed()
+{
+	Super::Destroyed();
+	
+	if (ElimBotComponent)
+	{
+		ElimBotComponent->DestroyComponent();
+	}	
 }
 
 void ABlasterCharacter::BeginPlay()
