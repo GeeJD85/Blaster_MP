@@ -26,15 +26,15 @@ public:
 	virtual void PostInitializeComponents() override;
 	void PlayFireMontage(bool bAiming);
 	void PlayElimMontage();
-
-	/*
+	
 	UFUNCTION(NetMulticast, Unreliable) // Unreliable because only playing animations which aren't too important
 	void MulticastHit(const FVector_NetQuantize& ImpactLocation, const FVector_NetQuantizeNormal& ImpactNormal);
-	*/
 	
 	virtual void OnRep_ReplicatedMovement() override;
-	UFUNCTION(NetMulticast, Reliable)
+
 	void Elim();
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastElim();
 
 protected:
 	virtual void BeginPlay() override;
@@ -154,6 +154,11 @@ private:
 	class ABlasterPlayerController* BlasterPlayerController;
 
 	bool bElimmed = false;
+	FTimerHandle ElimTimer;
+	void ElimTImerFinished();
+	
+	UPROPERTY(EditDefaultsOnly)
+	float ElimDelay = 3.f;
 	
 public:
 	void SetOverlappingWeapon(AWeapon* Weapon);

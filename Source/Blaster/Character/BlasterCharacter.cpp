@@ -139,7 +139,7 @@ void ABlasterCharacter::PlayHitReactMontage()
 	if (Combat == nullptr || Combat->EquippedWeapon == nullptr) return;
 
 	TObjectPtr<UAnimInstance> AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && HitReactMontage)
+	if (AnimInstance && HitReactMontage && !AnimInstance->IsAnyMontagePlaying())
 	{
 		AnimInstance->Montage_Play(HitReactMontage);
 		const FName SectionName("FromFront");
@@ -159,13 +159,10 @@ void ABlasterCharacter::SpawnHitParticles(const FVector_NetQuantize& ImpactLocat
 	}
 }
 
-/*
 void ABlasterCharacter::MulticastHit_Implementation(const FVector_NetQuantize& ImpactLocation, const FVector_NetQuantizeNormal& ImpactNormal) // Called from Projectile.cpp (server)
 {
-	PlayHitReactMontage();
 	SpawnHitParticles(ImpactLocation, ImpactNormal);
 }
-*/
 
 void ABlasterCharacter::OnRep_ReplicatedMovement()
 {
@@ -175,10 +172,24 @@ void ABlasterCharacter::OnRep_ReplicatedMovement()
 	TimeSinceLastMovementReplication = 0.f;
 }
 
-void ABlasterCharacter::Elim_Implementation()
+void ABlasterCharacter::Elim() // Called from server in GameMode
+{
+	MulticastElim();
+	GetWorldTimerManager().SetTimer(ElimTimer, this, &ABlasterCharacter::ElimTImerFinished, ElimDelay);
+}
+
+void ABlasterCharacter::MulticastElim_Implementation()
 {
 	bElimmed = true;
 	PlayElimMontage();
+}
+
+void ABlasterCharacter::ElimTImerFinished()
+{
+	if (TObjectPtr<ABlasterGameMode> BlasterGameMode = GetWorld()->GetAuthGameMode<ABlasterGameMode>())
+	{
+		BlasterGameMode->RequestRespawn(this, Controller);
+	}
 }
 
 void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,

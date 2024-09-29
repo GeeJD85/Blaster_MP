@@ -61,9 +61,9 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	if (TObjectPtr<ABlasterCharacter> BlasterCharacter = Cast<ABlasterCharacter>(OtherActor))
 	{
 		bWasPlayerHit = true;
-		//const FVector_NetQuantize ImpactPoint = Hit.ImpactPoint;
-		//const FVector_NetQuantizeNormal ImpactNormal = Hit.ImpactNormal;
-		//BlasterCharacter->MulticastHit(ImpactPoint, ImpactNormal);
+		const FVector_NetQuantize ImpactPoint = Hit.ImpactPoint;
+		const FVector_NetQuantizeNormal ImpactNormal = Hit.ImpactNormal;
+		BlasterCharacter->MulticastHit(ImpactPoint, ImpactNormal);
 	}
 
 	MulticastDestroyProjectile(bWasPlayerHit);
