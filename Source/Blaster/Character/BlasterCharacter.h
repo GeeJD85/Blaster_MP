@@ -57,6 +57,8 @@ protected:
 	UFUNCTION()
 	void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* InstigatorController, AActor* DamageCauser);
 	void UpdateHUDHealth();
+	// Poll for any relevant classes and initialise our HUD
+	void PollInit();
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> BlasterContext;
@@ -196,6 +198,8 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USoundCue> ElimBotSound;
+
+	TObjectPtr<class ABlasterPlayerState> BlasterPlayerState;
 	
 public:
 	void SetOverlappingWeapon(AWeapon* Weapon);
