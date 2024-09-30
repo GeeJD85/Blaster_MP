@@ -26,4 +26,13 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> DefeatsAmount;
+	
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> WeaponAmmoAmount;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> DefeatedText;
+	
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> EnemyName;
 };

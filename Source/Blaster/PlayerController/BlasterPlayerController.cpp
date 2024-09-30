@@ -6,6 +6,7 @@
 #include "Blaster/Character/BlasterCharacter.h"
 #include "Blaster/HUD/BlasterHUD.h"
 #include "Blaster/HUD/CharacterOverlay.h"
+#include "Components/HorizontalBox.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 
@@ -59,5 +60,31 @@ void ABlasterPlayerController::SetHUDDefeats(int32 Defeats)
 	{
 		FString DefeatsText = FString::Printf(TEXT("%d"), Defeats);
 		BlasterHUD->CharacterOverlay->DefeatsAmount->SetText(FText::FromString(DefeatsText));
+	}
+}
+
+void ABlasterPlayerController::SetHUDDefeatedByText(const FString& AttackerName)
+{
+	BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
+	if (BlasterHUD && BlasterHUD->CharacterOverlay && BlasterHUD->CharacterOverlay->EnemyName && BlasterHUD->CharacterOverlay->DefeatedText)
+	{
+		BlasterHUD->CharacterOverlay->EnemyName->SetText(FText::FromString(AttackerName));
+		
+		AttackerName != FString() ? BlasterHUD->CharacterOverlay->DefeatedText->SetVisibility(ESlateVisibility::Visible)
+		: BlasterHUD->CharacterOverlay->DefeatedText->SetVisibility(ESlateVisibility::Collapsed);
+		
+		AttackerName != FString() ? BlasterHUD->CharacterOverlay->EnemyName->SetVisibility(ESlateVisibility::Visible)
+		: BlasterHUD->CharacterOverlay->EnemyName->SetVisibility(ESlateVisibility::Collapsed);
+	}
+}
+
+void ABlasterPlayerController::SetHUDWeaponAmmo(int32 Ammo)
+{
+	BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
+
+	if (BlasterHUD && BlasterHUD->CharacterOverlay && BlasterHUD->CharacterOverlay->WeaponAmmoAmount)
+	{
+		FString AmmoText = FString::Printf(TEXT("%d"), Ammo);
+		BlasterHUD->CharacterOverlay->WeaponAmmoAmount->SetText(FText::FromString(AmmoText));
 	}
 }

@@ -187,6 +187,10 @@ void ABlasterCharacter::Elim() // Called from server in GameMode
 
 void ABlasterCharacter::MulticastElim_Implementation() // Server & Client
 {
+	if (BlasterPlayerController)
+	{
+		BlasterPlayerController->SetHUDWeaponAmmo(0);
+	}
 	bElimmed = true;
 	PlayElimMontage();
 

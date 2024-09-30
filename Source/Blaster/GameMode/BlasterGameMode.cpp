@@ -16,11 +16,13 @@ void ABlasterGameMode::PlayerEliminated(ABlasterCharacter* ElimmedCharacter, ABl
 
 	if(AttackerPlayerState && AttackerPlayerState != VictimPlayerState)
 	{
-		AttackerPlayerState->AddToScore(1.f);		
+		AttackerPlayerState->AddToScore(1.f);
+		// TODO: Function on PlayerState to display victim ID just killed 
 	}
-	if (VictimPlayerState)
+	if (VictimPlayerState && AttackerPlayerState)
 	{
 		VictimPlayerState->AddToDefeats(1);
+		VictimPlayerState->ShowDefeatedByText(AttackerPlayerState->GetPlayerName());
 	}
 	
 	if (ElimmedCharacter)
@@ -38,6 +40,11 @@ void ABlasterGameMode::RequestRespawn(ACharacter* ElimmedCharacter, AController*
 	}
 	if (ElimmedController)
 	{
+		TObjectPtr<ABlasterPlayerState> ElimmedPlayerState = ElimmedCharacter ? Cast<ABlasterPlayerState>(ElimmedController->PlayerState) : nullptr;
+		if(ElimmedPlayerState)
+		{
+			ElimmedPlayerState->ShowDefeatedByText(FString());
+		}
 		TArray<AActor*> PlayerStarts;
 		UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), PlayerStarts);
 		int32 Selection = FMath::RandRange(0, PlayerStarts.Num() - 1);		
