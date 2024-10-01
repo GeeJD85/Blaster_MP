@@ -26,17 +26,16 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PostInitializeComponents() override;
 	void PlayFireMontage(bool bAiming);
-	void PlayElimMontage();
-	
-	UFUNCTION(NetMulticast, Unreliable) // Unreliable because only playing animations which aren't too important
-	void MulticastHit(const FVector_NetQuantize& ImpactLocation, const FVector_NetQuantizeNormal& ImpactNormal);
-	
+	void PlayReloadMontage();
+	void PlayElimMontage();	
 	virtual void OnRep_ReplicatedMovement() override;
-
 	void Elim();
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastElim();
 	virtual void Destroyed() override;
+
+	UFUNCTION(NetMulticast, Unreliable) // Unreliable because only playing animations which aren't too important
+	void MulticastHit(const FVector_NetQuantize& ImpactLocation, const FVector_NetQuantizeNormal& ImpactNormal);
 
 protected:
 	virtual void BeginPlay() override;
@@ -45,6 +44,7 @@ protected:
 	virtual void Jump() override;
 	void Equip();
 	void CrouchPressed();
+	void ReloadButtonPressed();
 	void AimButtonPressed();
 	void AimButtonReleased();
 	void CalculateAO_Pitch();
@@ -83,6 +83,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> FireAction;
+	
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> ReloadAction;
 
 private:
 	UPROPERTY(VisibleAnywhere, Category=Camera)
@@ -114,14 +117,24 @@ private:
 	ETurningInPlace TurningInPlace;
 	void TurnInPlace(float DeltaTime);
 
+	/*
+	 * Animation Montages
+	 */
 	UPROPERTY(EditAnywhere, Category=Combat)
 	TObjectPtr<class UAnimMontage> FireWeaponMontage;
+	
+	UPROPERTY(EditAnywhere, Category=Combat)
+	TObjectPtr<UAnimMontage> ReloadMontage;
 
 	UPROPERTY(EditAnywhere, Category=Combat)
 	TObjectPtr<UAnimMontage> HitReactMontage;
 	
 	UPROPERTY(EditAnywhere, Category=Combat)
 	TObjectPtr<UAnimMontage> ElimMontage;
+
+	/*
+	 * Particles & Sounds
+	 */
 
 	UPROPERTY(EditAnywhere, Category=Combat)
 	TObjectPtr<class UParticleSystem> HitImpactParticles;
