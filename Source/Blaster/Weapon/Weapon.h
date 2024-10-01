@@ -89,10 +89,10 @@ private:
 	UPROPERTY(EditAnywhere, Category="Weapon Properties")
 	TObjectPtr<class UAnimationAsset> FireAnimation;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category="Ammo")
 	TSubclassOf<class ACasing> CasingClass;
 
-	UPROPERTY(EditAnywhere, ReplicatedUsing=OnRep_Ammo)
+	UPROPERTY(EditAnywhere, ReplicatedUsing=OnRep_Ammo, Category="Ammo")
 	int32 Ammo;
 
 	UFUNCTION()
@@ -100,7 +100,7 @@ private:
 
 	void SpendRound();
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category="Ammo")
 	int32 MagCapacity;
 
 	UPROPERTY()
