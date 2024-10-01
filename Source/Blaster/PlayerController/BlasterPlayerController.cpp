@@ -69,6 +69,11 @@ void ABlasterPlayerController::SetHUDDefeatedByText(const FString& AttackerName)
 	if (BlasterHUD && BlasterHUD->CharacterOverlay && BlasterHUD->CharacterOverlay->EnemyName && BlasterHUD->CharacterOverlay->DefeatedText)
 	{
 		BlasterHUD->CharacterOverlay->EnemyName->SetText(FText::FromString(AttackerName));
+
+		if (BlasterHUD->CharacterOverlay->FadeMessage && AttackerName != FString())
+		{
+			BlasterHUD->CharacterOverlay->PlayAnimation(BlasterHUD->CharacterOverlay->FadeMessage);
+		}
 		
 		AttackerName != FString() ? BlasterHUD->CharacterOverlay->DefeatedText->SetVisibility(ESlateVisibility::Visible)
 		: BlasterHUD->CharacterOverlay->DefeatedText->SetVisibility(ESlateVisibility::Collapsed);
@@ -86,5 +91,16 @@ void ABlasterPlayerController::SetHUDWeaponAmmo(int32 Ammo)
 	{
 		FString AmmoText = FString::Printf(TEXT("%d"), Ammo);
 		BlasterHUD->CharacterOverlay->WeaponAmmoAmount->SetText(FText::FromString(AmmoText));
+	}
+}
+
+void ABlasterPlayerController::SetHUDCarriedAmmo(int32 Ammo)
+{
+	BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
+
+	if (BlasterHUD && BlasterHUD->CharacterOverlay && BlasterHUD->CharacterOverlay->CarriedAmmoAmount)
+	{
+		FString AmmoText = FString::Printf(TEXT("%d"), Ammo);
+		BlasterHUD->CharacterOverlay->CarriedAmmoAmount->SetText(FText::FromString(AmmoText));
 	}
 }

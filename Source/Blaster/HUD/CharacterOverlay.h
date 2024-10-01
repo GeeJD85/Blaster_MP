@@ -29,10 +29,16 @@ public:
 	
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> WeaponAmmoAmount;
+	
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> CarriedAmmoAmount;
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> DefeatedText;
 	
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> EnemyName;
+
+	UPROPERTY(meta = (BindWidgetAnim), Transient)
+	TObjectPtr<class UWidgetAnimation> FadeMessage;
 };

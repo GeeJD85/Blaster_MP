@@ -20,6 +20,7 @@ public:
 	void SetHUDDefeats(int32 Defeats);	
 	void SetHUDDefeatedByText(const FString& AttackerName);
 	void SetHUDWeaponAmmo(int32 Ammo);
+	void SetHUDCarriedAmmo(int32 Ammo);
 	
 	virtual void OnPossess(APawn* InPawn) override;
 
