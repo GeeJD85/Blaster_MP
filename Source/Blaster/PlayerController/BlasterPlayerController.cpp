@@ -7,6 +7,7 @@
 #include "Blaster/HUD/BlasterHUD.h"
 #include "Blaster/HUD/CharacterOverlay.h"
 #include "Components/HorizontalBox.h"
+#include "Components/Image.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 
@@ -76,10 +77,10 @@ void ABlasterPlayerController::SetHUDDefeatedByText(const FString& AttackerName)
 		}
 		
 		AttackerName != FString() ? BlasterHUD->CharacterOverlay->DefeatedText->SetVisibility(ESlateVisibility::Visible)
-		: BlasterHUD->CharacterOverlay->DefeatedText->SetVisibility(ESlateVisibility::Collapsed);
+			: BlasterHUD->CharacterOverlay->DefeatedText->SetVisibility(ESlateVisibility::Collapsed);
 		
 		AttackerName != FString() ? BlasterHUD->CharacterOverlay->EnemyName->SetVisibility(ESlateVisibility::Visible)
-		: BlasterHUD->CharacterOverlay->EnemyName->SetVisibility(ESlateVisibility::Collapsed);
+			: BlasterHUD->CharacterOverlay->EnemyName->SetVisibility(ESlateVisibility::Collapsed);
 	}
 }
 
@@ -102,5 +103,22 @@ void ABlasterPlayerController::SetHUDCarriedAmmo(int32 Ammo)
 	{
 		FString AmmoText = FString::Printf(TEXT("%d"), Ammo);
 		BlasterHUD->CharacterOverlay->CarriedAmmoAmount->SetText(FText::FromString(AmmoText));
+	}
+}
+
+void ABlasterPlayerController::SetHUDWeaponInfo(FName WeaponName, UTexture2D* WeaponIcon)
+{
+	BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
+
+	if (BlasterHUD && BlasterHUD->CharacterOverlay && BlasterHUD->CharacterOverlay->WeaponName && BlasterHUD->CharacterOverlay->WeaponIcon)
+	{
+		WeaponName != FName() ? BlasterHUD->CharacterOverlay->WeaponName->SetVisibility(ESlateVisibility::Visible)
+			: BlasterHUD->CharacterOverlay->WeaponName->SetVisibility(ESlateVisibility::Collapsed);
+		FString WeaponText = WeaponName.ToString();
+		BlasterHUD->CharacterOverlay->WeaponName->SetText(FText::FromString(WeaponText));
+
+		WeaponIcon != nullptr ? BlasterHUD->CharacterOverlay->WeaponIcon->SetVisibility(ESlateVisibility::Visible)
+			: BlasterHUD->CharacterOverlay->WeaponIcon->SetVisibility(ESlateVisibility::Collapsed);
+		BlasterHUD->CharacterOverlay->WeaponIcon->SetBrushFromTexture(WeaponIcon, true);
 	}
 }

@@ -25,10 +25,13 @@ public:
 	virtual void OnRep_Defeats();
 	UFUNCTION()
 	virtual void OnRep_ShowDefeatedByText();
+	UFUNCTION()
+	virtual void OnRep_SetHUDWeaponInfo();
 	
 	void AddToScore(float ScoreAmount);
 	void AddToDefeats(int32 DefeatsAmount);
 	void ShowDefeatedByText(FString AttackerName);
+	void SetHUDWeaponInfo(FName WeaponName, UTexture2D* WeaponIcon);
 	
 
 private:
@@ -42,4 +45,10 @@ private:
 
 	UPROPERTY(ReplicatedUsing=OnRep_ShowDefeatedByText)
 	FString KilledByName;
+
+	UPROPERTY(ReplicatedUsing=OnRep_SetHUDWeaponInfo)
+	FName NewWeaponName;
+
+	UPROPERTY(ReplicatedUsing=OnRep_SetHUDWeaponInfo)
+	TObjectPtr<UTexture2D> NewWeaponIcon;
 };

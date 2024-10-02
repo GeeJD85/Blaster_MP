@@ -161,6 +161,8 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 		Controller->SetHUDCarriedAmmo(CarriedAmmo);
 	}
 
+	Character->UpdateEquippedWeaponInfo(EquippedWeapon->GetWeaponName(), EquippedWeapon->GetWeaponIcon());
+
 	if (EquippedWeapon->EquipSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, EquippedWeapon->EquipSound, Character->GetActorLocation());

@@ -653,3 +653,12 @@ ECombatState ABlasterCharacter::GetCombatState() const
 	if (Combat == nullptr) return ECombatState::ECS_MAX;
 	return Combat->CombatState;
 }
+
+void ABlasterCharacter::UpdateEquippedWeaponInfo(FName WeaponName, UTexture2D* WeaponIcon)
+{
+	if (BlasterPlayerState)
+	{
+		BlasterPlayerState->SetHUDWeaponInfo(WeaponName, WeaponIcon);
+	}
+	
+}

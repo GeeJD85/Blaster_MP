@@ -12,7 +12,9 @@ void ABlasterPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& 
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ABlasterPlayerState, Defeats);
-	DOREPLIFETIME(ABlasterPlayerState, KilledByName);
+	DOREPLIFETIME_CONDITION(ABlasterPlayerState, KilledByName, COND_OwnerOnly);
+	DOREPLIFETIME_CONDITION(ABlasterPlayerState, NewWeaponName, COND_OwnerOnly);
+	DOREPLIFETIME_CONDITION(ABlasterPlayerState, NewWeaponIcon, COND_OwnerOnly);
 }
 
 void ABlasterPlayerState::AddToScore(float ScoreAmount)
@@ -94,6 +96,34 @@ void ABlasterPlayerState::OnRep_ShowDefeatedByText()
 		if (Controller)
 		{
 			Controller->SetHUDDefeatedByText(KilledByName);
+		}
+	}
+}
+
+void ABlasterPlayerState::SetHUDWeaponInfo(FName WeaponName, UTexture2D* WeaponIcon)
+{
+	NewWeaponName = WeaponName;
+	NewWeaponIcon = WeaponIcon;
+	Character = Character == nullptr ? Cast<ABlasterCharacter>(GetPawn()) : Character;
+	if (Character)
+	{
+		Controller = Controller == nullptr ? Cast<ABlasterPlayerController>(Character->Controller) : Controller;
+		if (Controller)
+		{
+			Controller->SetHUDWeaponInfo(NewWeaponName, NewWeaponIcon);
+		}
+	}
+}
+
+void ABlasterPlayerState::OnRep_SetHUDWeaponInfo()
+{
+	Character = Character == nullptr ? Cast<ABlasterCharacter>(GetPawn()) : Character;
+	if (Character)
+	{
+		Controller = Controller == nullptr ? Cast<ABlasterPlayerController>(Character->Controller) : Controller;
+		if (Controller)
+		{
+			Controller->SetHUDWeaponInfo(NewWeaponName, NewWeaponIcon);
 		}
 	}
 }

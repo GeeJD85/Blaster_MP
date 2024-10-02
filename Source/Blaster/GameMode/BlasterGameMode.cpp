@@ -23,6 +23,7 @@ void ABlasterGameMode::PlayerEliminated(ABlasterCharacter* ElimmedCharacter, ABl
 	{
 		VictimPlayerState->AddToDefeats(1);
 		VictimPlayerState->ShowDefeatedByText(AttackerPlayerState->GetPlayerName());
+		VictimPlayerState->SetHUDWeaponInfo(FName(), nullptr);
 	}
 	
 	if (ElimmedCharacter)

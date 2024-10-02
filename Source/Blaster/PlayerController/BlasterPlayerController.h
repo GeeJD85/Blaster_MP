@@ -21,6 +21,7 @@ public:
 	void SetHUDDefeatedByText(const FString& AttackerName);
 	void SetHUDWeaponAmmo(int32 Ammo);
 	void SetHUDCarriedAmmo(int32 Ammo);
+	void SetHUDWeaponInfo(FName WeaponName, UTexture2D* WeaponIcon);
 	
 	virtual void OnPossess(APawn* InPawn) override;
 

@@ -41,4 +41,10 @@ public:
 
 	UPROPERTY(meta = (BindWidgetAnim), Transient)
 	TObjectPtr<class UWidgetAnimation> FadeMessage;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<class UImage> WeaponIcon;
+	
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> WeaponName;
 };

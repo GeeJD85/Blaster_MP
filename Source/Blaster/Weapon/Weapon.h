@@ -43,16 +43,16 @@ public:
 	TObjectPtr<class UTexture2D> CrosshairsCenter;
 
 	UPROPERTY(EditAnywhere, Category=Crosshairs)
-	TObjectPtr<class UTexture2D> CrosshairsLeft;
+	TObjectPtr<UTexture2D> CrosshairsLeft;
 
 	UPROPERTY(EditAnywhere, Category=Crosshairs)
-	TObjectPtr<class UTexture2D> CrosshairsRight;
+	TObjectPtr<UTexture2D> CrosshairsRight;
 
 	UPROPERTY(EditAnywhere, Category=Crosshairs)
-	TObjectPtr<class UTexture2D> CrosshairsTop;
+	TObjectPtr<UTexture2D> CrosshairsTop;
 
 	UPROPERTY(EditAnywhere, Category=Crosshairs)
-	TObjectPtr<class UTexture2D> CrosshairsBottom;
+	TObjectPtr<UTexture2D> CrosshairsBottom;
 
 	//
 	// Automatic fire
@@ -125,6 +125,12 @@ private:
 	UPROPERTY(EditAnywhere)
 	EWeaponType WeaponType;
 
+	UPROPERTY(EditAnywhere, Category="Weapon Properties")
+	TObjectPtr<UTexture2D> WeaponIcon;
+
+	UPROPERTY(EditAnywhere, Category="Weapon Properties")
+	FName WeaponName;
+
 public:	
 	void SetWeaponState(EWeaponState State);
 	FORCEINLINE TObjectPtr<USphereComponent> GetAreaSphere() const { return AreaSphere; }
@@ -135,4 +141,6 @@ public:
 	FORCEINLINE EWeaponType GetWeaponType() const { return WeaponType; }
 	FORCEINLINE int32 GetAmmo() const { return Ammo; }
 	FORCEINLINE int32 GetMagCapacity() const { return MagCapacity; }
+	FORCEINLINE FName GetWeaponName() const { return  WeaponName; }
+	FORCEINLINE UTexture2D* GetWeaponIcon() const { return  WeaponIcon; }
 };
