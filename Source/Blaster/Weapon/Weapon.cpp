@@ -57,6 +57,7 @@ void AWeapon::SetHUDAmmo()
 		if (BlasterOwnerController)
 		{
 			BlasterOwnerController->SetHUDWeaponAmmo(Ammo);
+			
 		}
 	}
 }
