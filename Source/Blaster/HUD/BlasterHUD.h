@@ -34,12 +34,12 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="Player Stats")
 	TSubclassOf<class UUserWidget> CharacterOverlayClass;
+	void AddCharacterOverlay();
 	
 	TObjectPtr<class UCharacterOverlay> CharacterOverlay;
 
 protected:
-	virtual void BeginPlay() override;
-	void AddCharacterOverlay();
+	virtual void BeginPlay() override;	
 	
 private:
 	FHUDPackage HUDPackage;
