@@ -32,6 +32,9 @@ public:
 	virtual float GetServerTime(); // Synced with server world check
 	virtual void ReceivedPlayer() override; // Sync with server clock as soon as possible
 	void OnMatchStateSet(FName State);
+	void HandleMatchHasStarted();
+	void HandleCooldown();
+	
 protected:
 	virtual void BeginPlay() override;
 	void SetHUDTime();
@@ -55,7 +58,6 @@ protected:
 	float TimeSyncFrequency = 5.f;
 	float TimeSyncRunningTime = 0.f;
 	void CheckTimeSync(float DeltaSeconds);
-	void HandleMatchHasStarted();
 
 	UFUNCTION(Server, Reliable)
 	void ServerCheckMatchState();
@@ -66,6 +68,9 @@ protected:
 private:
 	UPROPERTY()
 	class ABlasterHUD* BlasterHUD;
+
+	UPROPERTY()
+	class ABlasterGameMode* GameMode;
 
 	float LevelStartingTime = 0.f;
 	float MatchTime = 0.f;

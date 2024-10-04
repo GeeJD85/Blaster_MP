@@ -6,6 +6,11 @@
 #include "GameFramework/GameMode.h"
 #include "BlasterGameMode.generated.h"
 
+namespace MatchState
+{
+	extern BLASTER_API const FName Cooldown; // Match duration has been reached. Display winner and begin cooldown timer
+}
+
 /**
  * 
  */
@@ -19,12 +24,16 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void PlayerEliminated(class ABlasterCharacter* ElimmedCharacter, class ABlasterPlayerController* VictimController, ABlasterPlayerController* AttackerController);
 	virtual void RequestRespawn(ACharacter* ElimmedCharacter, AController* ElimmedController);
+	float GetLevelStartingTime();
 
 	UPROPERTY(EditDefaultsOnly)
 	float WarmupTime = 10.f;
 
 	UPROPERTY(EditDefaultsOnly)
 	float MatchTime = 120.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	float CooldownTime = 10.f;
 
 	float LevelStartingTime = 0.f;
 
