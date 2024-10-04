@@ -318,14 +318,17 @@ void ABlasterPlayerController::ServerCheckMatchState_Implementation()
 
 void ABlasterPlayerController::ClientJoinMidGame_Implementation(FName StateOfMatch, float Warmup, float Match, float StartingTime)
 {
-	WarmupTime = Warmup;
-	MatchTime = Match;
-	LevelStartingTime = StartingTime;
-	MatchState = StateOfMatch;
-	OnMatchStateSet(MatchState);
-	
-	if (BlasterHUD && MatchState == MatchState::WaitingToStart)
+	if (!HasAuthority())
 	{
-		BlasterHUD->AddAnnouncement();
+		WarmupTime = Warmup;
+		MatchTime = Match;
+		LevelStartingTime = StartingTime;
+		MatchState = StateOfMatch;
+		OnMatchStateSet(MatchState);
+	
+		if (BlasterHUD && MatchState == MatchState::WaitingToStart)
+		{
+			BlasterHUD->AddAnnouncement();
+		}
 	}
 }
