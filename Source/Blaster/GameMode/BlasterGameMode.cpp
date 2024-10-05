@@ -31,7 +31,7 @@ void ABlasterGameMode::Tick(float DeltaSeconds)
 
 	if (MatchState == MatchState::WaitingToStart)
 	{
-		CountDownTime = WarmupTime - GetWorld()->GetTimeSeconds() /*+ LevelStartingTime*/;
+		CountDownTime = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime;
 		if (CountDownTime <= 0.f)
 		{
 			StartMatch();			
@@ -39,7 +39,6 @@ void ABlasterGameMode::Tick(float DeltaSeconds)
 	}
 	else if (MatchState == MatchState::InProgress)
 	{
-		// Maybe needs fix?
 		CountDownTime = WarmupTime + MatchTime - GetWorld()->GetTimeSeconds() + LevelStartingTime;
 		if (CountDownTime <= 0.f)
 		{
