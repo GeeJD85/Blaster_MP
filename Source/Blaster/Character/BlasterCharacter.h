@@ -34,6 +34,10 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastElim();
 	virtual void Destroyed() override;
+	void FireButtonPressed(const FInputActionValue& Value);
+
+	UPROPERTY(Replicated)
+	bool bDisableGameplay = false;
 
 	UFUNCTION(NetMulticast, Unreliable) // Unreliable because only playing animations which aren't too important
 	void MulticastHit(const FVector_NetQuantize& ImpactLocation, const FVector_NetQuantizeNormal& ImpactNormal);
@@ -50,8 +54,7 @@ protected:
 	void AimButtonReleased();
 	void CalculateAO_Pitch();
 	void AimOffset(float DeltaTime);
-	void SimProxiesTurn();
-	void FireButtonPressed(const FInputActionValue& Value);
+	void SimProxiesTurn();	
 	void PlayHitReactMontage();
 	void SpawnHitParticles(const FVector_NetQuantize& ImpactLocation, const FVector_NetQuantizeNormal& ImpactNormal);
 
@@ -60,6 +63,7 @@ protected:
 	void UpdateHUDHealth();
 	// Poll for any relevant classes and initialise our HUD
 	void PollInit();
+	void RotateInPLace(float DeltaSeconds);
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> BlasterContext;
@@ -232,5 +236,7 @@ public:
 	FORCEINLINE float GetMaxHealth() const {return MaxHealth; }
 	ECombatState GetCombatState() const;
 	void UpdateEquippedWeaponInfo(FName WeaponName, UTexture2D* WeaponIcon);
+	FORCEINLINE TObjectPtr<UCombatComponent> GetCombat() const { return Combat; }
+	FORCEINLINE bool GetDisableGameplay() const { return bDisableGameplay; }
 };
 

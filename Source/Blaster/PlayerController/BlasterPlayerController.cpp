@@ -3,6 +3,7 @@
 
 #include "BlasterPlayerController.h"
 
+#include "Blaster/BlasterComponents/CombatComponent.h"
 #include "Blaster/Character/BlasterCharacter.h"
 #include "Blaster/GameMode/BlasterGameMode.h"
 #include "Blaster/HUD/Announcement.h"
@@ -222,10 +223,10 @@ void ABlasterPlayerController::SetHUDTime()
 	else if (MatchState == MatchState::Cooldown) TimeLeft =  CooldownTime + WarmupTime + MatchTime - GetServerTime() + LevelStartingTime;
 	
 	uint32 SecondsLeft = FMath::CeilToInt(TimeLeft);
-	//if (HasAuthority() && GameMode)
-	//{
-	//	SecondsLeft = FMath::CeilToInt(GameMode->GetCountdownTime() + LevelStartingTime);
-	//}
+	if (HasAuthority() && GameMode)
+	{
+		SecondsLeft = FMath::CeilToInt(GameMode->GetCountdownTime() + LevelStartingTime);
+	}
 	if (CountdownInt != SecondsLeft)
 	{
 		if (MatchState == MatchState::WaitingToStart || MatchState == MatchState::Cooldown)
@@ -337,6 +338,14 @@ void ABlasterPlayerController::HandleCooldown()
 			FString AnnouncementText("New Match Starts In:");
 			BlasterHUD->Announcement->AnnouncementText->SetText(FText::FromString(AnnouncementText));
 			BlasterHUD->Announcement->InfoText->SetText(FText());
+		}
+	}
+	if(TObjectPtr<ABlasterCharacter> BlasterCharacter = Cast<ABlasterCharacter>(GetPawn()))
+	{
+		BlasterCharacter->bDisableGameplay = true;
+		if (BlasterCharacter->GetCombat())
+		{
+			BlasterCharacter->GetCombat()->FireButtonPressed(false);
 		}
 	}
 }

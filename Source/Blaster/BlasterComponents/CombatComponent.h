@@ -26,6 +26,7 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
 	void EquipWeapon(AWeapon* WeaponToEquip);
+	void FireButtonPressed(bool bPressed);
 	void Reload();
 	UFUNCTION(BlueprintCallable)
 	void FinishReloading();
@@ -39,8 +40,7 @@ protected:
 
 	UFUNCTION()
 	void OnRep_EquippedWeapon();
-
-	void FireButtonPressed(bool bPressed);
+	
 
 	UFUNCTION(Server, Reliable)
 	void ServerFire(const FVector_NetQuantize& TraceHitTarget);
@@ -60,6 +60,7 @@ protected:
 	int32 AmountToReload();
 
 private:
+	UPROPERTY()
 	TObjectPtr<ABlasterCharacter> Character;
 	UPROPERTY()
 	class ABlasterPlayerController* Controller;
