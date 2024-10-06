@@ -54,7 +54,7 @@ void AProjectile::BeginPlay()
 }
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-	FVector NormalImpulse, const FHitResult& Hit)
+                        FVector NormalImpulse, const FHitResult& Hit)
 {
 	bool bWasPlayerHit = false;
 	
@@ -69,33 +69,28 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	MulticastDestroyProjectile(bWasPlayerHit);
 }
 
+void AProjectile::PlayImpactEffects()
+{
+	if(ImpactParticles)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, GetActorTransform());
+	}
+	if (ImpactSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
+	}
+}
+
 void AProjectile::MulticastDestroyProjectile_Implementation(bool bPlayerHit)
 {
 	if (!bPlayerHit)
 	{
-		if(ImpactParticles)
-		{
-			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, GetActorTransform());
-		}
-		if (ImpactSound)
-		{
-			UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
-		}
+		PlayImpactEffects();
 	}
-	Destroy();
+		Destroy();
 }
 
 void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
-
-/*
-void AProjectile::Destroyed() // Replicated across network by default
-{
-	Super::Destroyed();
-
-	
-}
-*/
