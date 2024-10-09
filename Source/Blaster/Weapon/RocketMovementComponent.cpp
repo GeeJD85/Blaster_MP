@@ -12,5 +12,5 @@ URocketMovementComponent::EHandleBlockingHitResult URocketMovementComponent::Han
 
 void URocketMovementComponent::HandleImpact(const FHitResult& Hit, float TimeSlice, const FVector& MoveDelta)
 {
-	// Rockets should not stop; only explode when their CollisionBoxdetects a hit
+	// Rockets should not stop; only explode when their CollisionBox detects a hit
 }
