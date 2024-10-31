@@ -14,7 +14,7 @@ void ABlasterHUD::BeginPlay()
 
 void ABlasterHUD::AddCharacterOverlay()
 {
-	TObjectPtr<APlayerController> PlayerController = GetOwningPlayerController();
+	APlayerController* PlayerController = GetOwningPlayerController();
 
 	if (PlayerController && CharacterOverlayClass)
 	{
@@ -25,7 +25,7 @@ void ABlasterHUD::AddCharacterOverlay()
 
 void ABlasterHUD::AddAnnouncement()
 {
-	TObjectPtr<APlayerController> PlayerController = GetOwningPlayerController();
+	APlayerController* PlayerController = GetOwningPlayerController();
 
 	if (PlayerController && AnnouncementClass)
 	{

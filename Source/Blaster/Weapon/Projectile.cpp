@@ -54,7 +54,7 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 {
 	bool bWasPlayerHit = false;
 	
-	if (TObjectPtr<ABlasterCharacter> BlasterCharacter = Cast<ABlasterCharacter>(OtherActor))
+	if (ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(OtherActor))
 	{
 		bWasPlayerHit = true;
 		const FVector_NetQuantize ImpactPoint = Hit.ImpactPoint;

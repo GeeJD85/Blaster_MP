@@ -39,7 +39,7 @@ void UOverheadWidget::ShowPlayerNetRole(APawn* InPawn)
 
 void UOverheadWidget::SetPlayerName(APawn* InPawn)
 {
-	const TObjectPtr<APlayerState> PlayerState = InPawn->GetPlayerState();
+	const APlayerState* PlayerState = InPawn->GetPlayerState();
 
 	if(!PlayerState)
 	{

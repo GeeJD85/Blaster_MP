@@ -62,7 +62,7 @@ void ABlasterGameMode::OnMatchStateSet()
 
 	for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator)
 	{
-		if (TObjectPtr<ABlasterPlayerController> BlasterPlayer = Cast<ABlasterPlayerController>(*Iterator))
+		if (ABlasterPlayerController* BlasterPlayer = Cast<ABlasterPlayerController>(*Iterator))
 		{
 			BlasterPlayer->OnMatchStateSet(MatchState);
 		}
@@ -72,10 +72,10 @@ void ABlasterGameMode::OnMatchStateSet()
 void ABlasterGameMode::PlayerEliminated(ABlasterCharacter* ElimmedCharacter, ABlasterPlayerController* VictimController,
                                         ABlasterPlayerController* AttackerController)
 {
-	TObjectPtr<ABlasterPlayerState> AttackerPlayerState = AttackerController ? Cast<ABlasterPlayerState>(AttackerController->PlayerState) : nullptr;
-	TObjectPtr<ABlasterPlayerState> VictimPlayerState = VictimController ? Cast<ABlasterPlayerState>(VictimController->PlayerState) : nullptr;
+	ABlasterPlayerState* AttackerPlayerState = AttackerController ? Cast<ABlasterPlayerState>(AttackerController->PlayerState) : nullptr;
+	ABlasterPlayerState* VictimPlayerState = VictimController ? Cast<ABlasterPlayerState>(VictimController->PlayerState) : nullptr;
 
-	TObjectPtr<ABlasterGameState> BlasterGameState = GetGameState<ABlasterGameState>();
+	ABlasterGameState* BlasterGameState = GetGameState<ABlasterGameState>();
 	
 	if(AttackerPlayerState && AttackerPlayerState != VictimPlayerState && BlasterGameState)
 	{
@@ -105,7 +105,7 @@ void ABlasterGameMode::RequestRespawn(ACharacter* ElimmedCharacter, AController*
 	}
 	if (ElimmedController)
 	{
-		TObjectPtr<ABlasterPlayerState> ElimmedPlayerState = ElimmedCharacter ? Cast<ABlasterPlayerState>(ElimmedController->PlayerState) : nullptr;
+		ABlasterPlayerState* ElimmedPlayerState = ElimmedCharacter ? Cast<ABlasterPlayerState>(ElimmedController->PlayerState) : nullptr;
 		if(ElimmedPlayerState)
 		{
 			ElimmedPlayerState->ShowDefeatedByText(FString());

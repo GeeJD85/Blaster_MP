@@ -28,7 +28,7 @@ void AHitScanWeapon::Fire(const FVector& HitTarget)
 		FVector Start = SocketTransform.GetLocation();
 		FVector End = Start + (HitTarget - Start) * 1.25f;
 
-		TObjectPtr<UWorld> World = GetWorld();
+		UWorld* World = GetWorld();
 		if (World)
 		{
 			FHitResult FireHit;
@@ -42,7 +42,7 @@ void AHitScanWeapon::Fire(const FVector& HitTarget)
 			if (FireHit.bBlockingHit)
 			{
 				BeamEnd = FireHit.ImpactPoint;
-				TObjectPtr<ABlasterCharacter> BlasterCharacter = Cast<ABlasterCharacter>(FireHit.GetActor());
+				ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(FireHit.GetActor());
 				if (BlasterCharacter && InstigatorController && HasAuthority())
 				{
 					UGameplayStatics::ApplyDamage(
@@ -73,7 +73,7 @@ void AHitScanWeapon::Fire(const FVector& HitTarget)
 			}
 			if (BeamParticles)
 			{
-				TObjectPtr<UParticleSystemComponent> Beam = UGameplayStatics::SpawnEmitterAtLocation(
+				UParticleSystemComponent* Beam = UGameplayStatics::SpawnEmitterAtLocation(
 					World,
 					BeamParticles,
 					SocketTransform

@@ -59,7 +59,7 @@ void ABlasterPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 	
-	if(TObjectPtr<ABlasterCharacter> BlasterCharacter = Cast<ABlasterCharacter>(InPawn))
+	if(ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(InPawn))
 	{
 		SetHUDHealth(BlasterCharacter->GetHealth(), BlasterCharacter->GetMaxHealth());
 	}
@@ -344,8 +344,8 @@ void ABlasterPlayerController::HandleCooldown()
 			FString AnnouncementText("New Match Starts In:");
 			BlasterHUD->Announcement->AnnouncementText->SetText(FText::FromString(AnnouncementText));
 
-			TObjectPtr<ABlasterGameState> BlasterGameState = Cast<ABlasterGameState>(UGameplayStatics::GetGameState(this));
-			TObjectPtr<ABlasterPlayerState> BlasterPlayerState = GetPlayerState<ABlasterPlayerState>();
+			ABlasterGameState* BlasterGameState = Cast<ABlasterGameState>(UGameplayStatics::GetGameState(this));
+			ABlasterPlayerState* BlasterPlayerState = GetPlayerState<ABlasterPlayerState>();
 			if (BlasterGameState && BlasterPlayerState)
 			{
 				TArray<ABlasterPlayerState*> TopPlayers = BlasterGameState->TopScoringPlayers;
@@ -374,7 +374,7 @@ void ABlasterPlayerController::HandleCooldown()
 			}
 		}
 	}
-	if(TObjectPtr<ABlasterCharacter> BlasterCharacter = Cast<ABlasterCharacter>(GetPawn()))
+	if(ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(GetPawn()))
 	{
 		BlasterCharacter->bDisableGameplay = true;
 		if (BlasterCharacter->GetCombat())

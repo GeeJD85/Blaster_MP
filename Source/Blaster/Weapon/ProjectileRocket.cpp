@@ -75,10 +75,10 @@ void AProjectileRocket::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 	{
 		return;
 	}
-	TObjectPtr<APawn> FiringPawn = GetInstigator();
+	APawn* FiringPawn = GetInstigator();
 	if (FiringPawn && HasAuthority())
 	{
-		if (TObjectPtr<AController> FiringController = FiringPawn->GetController())
+		if (AController* FiringController = FiringPawn->GetController())
 		{
 			UGameplayStatics::ApplyRadialDamageWithFalloff(
 				this, // World Context object
